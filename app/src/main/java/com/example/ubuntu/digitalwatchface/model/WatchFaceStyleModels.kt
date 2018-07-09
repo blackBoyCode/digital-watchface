@@ -25,9 +25,7 @@ data class WatchFaceDimensions(
         val mainWidth:Float,
         //Length in pixels of the shadow radius
         //(range from 0.0 to 1.0)
-        val shadowRadius:Float
-
-
+        val shadowRadius:Float// will use it with the paint Object "setShadowLayer"
 
 )
 // background image, 0 for no image
