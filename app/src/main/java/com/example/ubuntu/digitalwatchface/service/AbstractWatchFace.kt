@@ -4,11 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.Typeface
+import android.graphics.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
@@ -20,6 +16,7 @@ import android.view.SurfaceHolder
 import android.view.WindowInsets
 import android.widget.Toast
 import com.example.ubuntu.digitalwatchface.R
+import com.example.ubuntu.digitalwatchface.model.DigitalWatchFaceStyle
 
 import java.lang.ref.WeakReference
 import java.util.Calendar
@@ -54,6 +51,14 @@ private const val MSG_UPDATE_TIME = 0
 
 abstract class AbstractWatchFace: CanvasWatchFaceService() {
 
+    //this will implements everything from our Models and the Dsl Builder "WatchFaceStyleDsl"
+    //this will hold our default values and the values define in the Dsl Builder
+    private lateinit var digitalWatchFaceStyle: DigitalWatchFaceStyle
+
+    //we will need to override our digitalWatchFaceStyle from the Dsl to have our custom values
+    //this will be initialise called in our onCreate(SurfaceHolder) as an expression
+    abstract fun getWatchFaceStyle(): DigitalWatchFaceStyle
+
 
     override fun onCreateEngine(): Engine {
         return Engine()
@@ -84,6 +89,9 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
         private lateinit var mBackgroundPaint: Paint
         private lateinit var mTextPaint: Paint
 
+        //our bitmap
+        private lateinit var backgroundBitmap: Bitmap
+
         /**
          * Whether the display supports fewer bits for each color in ambient mode. When true, we
          * disable anti-aliasing in ambient mode.
@@ -104,6 +112,9 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
         override fun onCreate(holder: SurfaceHolder) {
             super.onCreate(holder)
 
+            digitalWatchFaceStyle = getWatchFaceStyle()
+
+
             setWatchFaceStyle(WatchFaceStyle.Builder(this@AbstractWatchFace)
                     .setAcceptsTapEvents(true)
                     .build())
@@ -122,8 +133,21 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
             mTextPaint = Paint().apply {
                 typeface = NORMAL_TYPEFACE
                 isAntiAlias = true
-                color = ContextCompat.getColor(applicationContext, R.color.digital_text)
+                color = digitalWatchFaceStyle.watchFaceColors.main //ContextCompat.getColor(applicationContext, R.color.digital_text)
             }
+
+
+            initializeBackground()
+
+        }
+
+        private fun initializeBackground() {
+
+            backgroundBitmap = BitmapFactory.decodeResource(
+                    resources,
+                    digitalWatchFaceStyle.watchFaceBackgroundImage.backgroundImageResource
+            )
+
         }
 
         override fun onDestroy() {
@@ -185,6 +209,9 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
             } else {
                 canvas.drawRect(
                         0f, 0f, bounds.width().toFloat(), bounds.height().toFloat(), mBackgroundPaint)
+
+                //TESTING bitmap .....
+                canvas.drawBitmap(backgroundBitmap,0f,0f, mBackgroundPaint)
             }
 
             // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
@@ -289,4 +316,6 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
             }
         }
     }
+
+
 }

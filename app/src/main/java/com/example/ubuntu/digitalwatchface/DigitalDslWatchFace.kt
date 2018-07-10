@@ -1,2 +1,38 @@
 package com.example.ubuntu.digitalwatchface
 
+import android.graphics.Color
+import com.example.ubuntu.digitalwatchface.model.DigitalWatchFaceStyle
+import com.example.ubuntu.digitalwatchface.service.AbstractWatchFace
+import com.example.ubuntu.digitalwatchface.service.digitalWatchFaceStyle
+
+//those "()" mean it's extending a class not a interface
+class DigitalDslWatchFace : AbstractWatchFace() {
+
+    override fun getWatchFaceStyle(): DigitalWatchFaceStyle {
+
+
+
+
+
+        //TESTING DSL
+        return digitalWatchFaceStyle {
+
+            watchFaceColors {
+                main = Color.BLUE
+            }
+
+            watchFaceDimensions {
+                mainWidth = 2f
+            }
+
+            watchFaceBackgroundImage {
+
+                backgroundImageResource = R.drawable.download
+            }
+
+
+
+        }
+
+    }
+}
