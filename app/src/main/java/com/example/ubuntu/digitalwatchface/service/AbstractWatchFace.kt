@@ -134,6 +134,21 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
                 typeface = NORMAL_TYPEFACE
                 isAntiAlias = true
                 color = digitalWatchFaceStyle.watchFaceColors.main //ContextCompat.getColor(applicationContext, R.color.digital_text)
+
+                setShadowLayer(
+                        digitalWatchFaceStyle.watchFaceDimensions.shadowRadius,
+                        0f,
+                        0f,
+                        digitalWatchFaceStyle.watchFaceColors.shadow
+                )
+
+                //added stroke width
+
+                //TODO the two method doesn't work...WHY??
+//                strokeWidth = digitalWatchFaceStyle.watchFaceDimensions.mainWidth
+//                strokeCap = Paint.Cap.ROUND
+
+
             }
 
 

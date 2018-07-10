@@ -19,10 +19,14 @@ class DigitalDslWatchFace : AbstractWatchFace() {
 
             watchFaceColors {
                 main = Color.BLUE
+
+                shadow = Color.WHITE
             }
 
             watchFaceDimensions {
-                mainWidth = 2f
+                mainWidth = 30f
+
+                shadowRadius = 5f
             }
 
             watchFaceBackgroundImage {
