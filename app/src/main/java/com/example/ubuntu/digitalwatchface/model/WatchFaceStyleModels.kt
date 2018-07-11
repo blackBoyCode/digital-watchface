@@ -21,6 +21,7 @@ data class WatchFaceColors(
 )
 
 data class WatchFaceDimensions(
+        //TODO remove the mainWidth as it doesn't apply to digital watch
         // main stroke width of the clock text Paint Object in pixel
         val mainWidth:Float,
         //Length in pixels of the shadow radius

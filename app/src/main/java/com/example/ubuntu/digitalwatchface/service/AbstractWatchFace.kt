@@ -156,6 +156,17 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
 
         }
 
+        override fun onSurfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
+            super.onSurfaceChanged(holder, format, width, height)
+
+            //arrange bitmap scaling value to adjust to screen
+            val scale = width.toFloat()/backgroundBitmap.width.toFloat()
+
+            backgroundBitmap = Bitmap.createScaledBitmap(backgroundBitmap,
+                    (backgroundBitmap.width * scale).toInt(),
+                    (backgroundBitmap.height * scale).toInt(), true)
+        }
+
         private fun initializeBackground() {
 
             backgroundBitmap = BitmapFactory.decodeResource(
@@ -182,6 +193,12 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
             super.onTimeTick()
             invalidate()
         }
+
+
+
+
+
+
 
         override fun onAmbientModeChanged(inAmbientMode: Boolean) {
             super.onAmbientModeChanged(inAmbientMode)
@@ -294,7 +311,7 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
                     if (isRound)
                         R.dimen.digital_text_size_round
                     else
-                        R.dimen.digital_text_size
+                        R.dimen.custom_digital_text_size //R.id.digital_text_size
             )
 
             mTextPaint.textSize = textSize
