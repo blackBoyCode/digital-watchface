@@ -9,11 +9,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.support.wearable.watchface.CanvasWatchFaceService
 import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
 import android.view.SurfaceHolder
 import android.view.WindowInsets
+import android.widget.TextView
 import android.widget.Toast
 import com.example.ubuntu.digitalwatchface.R
 import com.example.ubuntu.digitalwatchface.model.DigitalWatchFaceStyle
@@ -122,7 +124,7 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
             mCalendar = Calendar.getInstance()
 
             val resources = this@AbstractWatchFace.resources
-            mYOffset = resources.getDimension(R.dimen.digital_y_offset)
+            mYOffset = resources.getDimension(R.dimen.custom_digital_y_offset)
 
             // Initializes background.
             mBackgroundPaint = Paint().apply {
@@ -304,7 +306,7 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
                     if (isRound)
                         R.dimen.digital_x_offset_round
                     else
-                        R.dimen.digital_x_offset
+                        R.dimen.custom_digital_x_offset
             )
 
             val textSize = resources.getDimension(

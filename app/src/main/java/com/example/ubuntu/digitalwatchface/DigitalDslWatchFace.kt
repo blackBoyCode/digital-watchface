@@ -31,7 +31,7 @@ class DigitalDslWatchFace : AbstractWatchFace() {
 
             watchFaceBackgroundImage {
 
-                backgroundImageResource = R.drawable.android_black_logo
+                backgroundImageResource = R.drawable.download
             }
 
 
