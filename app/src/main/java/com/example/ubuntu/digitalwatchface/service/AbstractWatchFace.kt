@@ -15,7 +15,6 @@ import android.support.wearable.watchface.WatchFaceService
 import android.support.wearable.watchface.WatchFaceStyle
 import android.view.SurfaceHolder
 import android.view.WindowInsets
-import android.widget.TextView
 import android.widget.Toast
 import com.example.ubuntu.digitalwatchface.R
 import com.example.ubuntu.digitalwatchface.model.DigitalWatchFaceStyle
@@ -53,12 +52,14 @@ private const val MSG_UPDATE_TIME = 0
 
 abstract class AbstractWatchFace: CanvasWatchFaceService() {
 
+    private lateinit var customTypeface: Typeface
+
     //this will implements everything from our Models and the Dsl Builder "WatchFaceStyleDsl"
     //this will hold our default values and the values define in the Dsl Builder
     private lateinit var digitalWatchFaceStyle: DigitalWatchFaceStyle
 
     //we will need to override our digitalWatchFaceStyle from the Dsl to have our custom values
-    //this will be initialise called in our onCreate(SurfaceHolder) as an expression
+    //this will be called in our onCreate(SurfaceHolder) as an expression
     abstract fun getWatchFaceStyle(): DigitalWatchFaceStyle
 
 
@@ -87,6 +88,11 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
 
         private var mXOffset: Float = 0F
         private var mYOffset: Float = 0F
+
+        //handy values to have
+        private var centerX: Float = 0F
+        private var centerY: Float = 0F
+
 
         private lateinit var mBackgroundPaint: Paint
         private lateinit var mTextPaint: Paint
@@ -128,12 +134,15 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
 
             // Initializes background.
             mBackgroundPaint = Paint().apply {
-                color = ContextCompat.getColor(applicationContext, R.color.background)
+                color = ContextCompat.getColor( applicationContext, R.color.background)
             }
+
+            // application context works in the onCreate but not outside of class...??
+            customTypeface = ResourcesCompat.getFont(applicationContext, R.font.monoton_regular) as Typeface
 
             // Initializes Watch Face.
             mTextPaint = Paint().apply {
-                typeface = NORMAL_TYPEFACE
+                typeface = customTypeface
                 isAntiAlias = true
                 color = digitalWatchFaceStyle.watchFaceColors.main //ContextCompat.getColor(applicationContext, R.color.digital_text)
 
@@ -160,6 +169,9 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
 
         override fun onSurfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
             super.onSurfaceChanged(holder, format, width, height)
+
+            centerX = width / 2f
+            centerY = height / 2f
 
             //arrange bitmap scaling value to adjust to screen
             val scale = width.toFloat()/backgroundBitmap.width.toFloat()
@@ -258,7 +270,30 @@ abstract class AbstractWatchFace: CanvasWatchFaceService() {
             else
                 String.format("%d:%02d:%02d", mCalendar.get(Calendar.HOUR),
                         mCalendar.get(Calendar.MINUTE), mCalendar.get(Calendar.SECOND))
-            canvas.drawText(text, mXOffset, mYOffset, mTextPaint)
+            //canvas.drawText(text, mXOffset, mYOffset, mTextPaint)
+
+
+            if (mAmbient){
+
+                mTextPaint.color = Color.WHITE
+                mTextPaint.isAntiAlias = false
+
+                canvas.drawText(text, mXOffset, mYOffset, mTextPaint)
+
+                canvas.drawText("d:${mCalendar.get(Calendar.DATE)}" +
+                        " m:${mCalendar.get(Calendar.MONTH) + 1 }" +//January = 0
+                        " y:${mCalendar.get(Calendar.YEAR)}",mXOffset-80f,mYOffset-40f,mTextPaint)
+
+            }else{
+                mTextPaint.color = digitalWatchFaceStyle.watchFaceColors.main
+                mTextPaint.isAntiAlias = true
+
+                canvas.drawText(text, mXOffset, mYOffset, mTextPaint)
+                canvas.drawText("d:${mCalendar.get(Calendar.DATE)}" +
+                        " m:${mCalendar.get(Calendar.MONTH) + 1 }" +//January = 0
+                        " y:${mCalendar.get(Calendar.YEAR)}",mXOffset-80f,mYOffset-40f,mTextPaint)
+            }
+
         }
 
         override fun onVisibilityChanged(visible: Boolean) {

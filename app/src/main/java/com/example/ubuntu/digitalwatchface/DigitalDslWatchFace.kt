@@ -14,7 +14,7 @@ class DigitalDslWatchFace : AbstractWatchFace() {
 
 
 
-        //TESTING DSL
+        //TODO the DSL could have fonts to define...?
         return digitalWatchFaceStyle {
 
             watchFaceColors {

@@ -1,5 +1,7 @@
 package com.example.ubuntu.digitalwatchface.model
 
+import android.support.v4.content.res.ResourcesCompat
+
 //no background image so resource id = 0
 const val EMPTY_IMAGE_RESOURCE = 0
 
@@ -43,3 +45,11 @@ data class WatchFaceBackgroundImage(
     }
 
 }
+
+
+//TODO should I add fonts as a data class in the DSL??
+//data class WatchFaceFonts(val font_1:Int, val font_2:Int){
+//
+//
+//
+//}

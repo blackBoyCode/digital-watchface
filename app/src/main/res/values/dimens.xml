@@ -11,7 +11,7 @@
 
 
     <!--my custom values-->
-    <dimen name="custom_digital_text_size">25dp</dimen>
+    <dimen name="custom_digital_text_size">20dp</dimen>
     <dimen name="custom_digital_text_size_round">45dp</dimen>
     <dimen name="custom_digital_x_offset">45dp</dimen>
     <dimen name="custom_digital_x_offset_round">25dp</dimen>
